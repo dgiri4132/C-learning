@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/darshangiri/C-learning/day-06-computation/day05-part2'
+relocations:     []
+...
