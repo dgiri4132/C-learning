@@ -74,12 +74,19 @@ int main(){
 
     for(string temp; cin>>temp;){
         words.push_back(temp);
+        int found=0;
         for (int i=0;i<disliked.size();++i){
             if (temp==disliked[i])
-                cout<<"BLEEP !!! "<< temp<<" is a disliked word.\n";
-            else
-                not_disliked.push_back(temp);   
+                found=1;
+              
         }
+        if (found)
+            cout<<"BLEEP !!! "<< temp<<" is a disliked word.\n";
+        else
+            not_disliked.push_back(temp); 
     }
-    cout<< " The good words are "<< not_disliked;
+    cout<< " The good words are: ";
+    for (int i=0;i<not_disliked.size();++i){
+        cout<< not_disliked[i]<<" ";
+    }
 }
