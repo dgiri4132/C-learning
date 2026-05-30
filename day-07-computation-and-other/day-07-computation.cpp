@@ -82,7 +82,7 @@ using namespace std;
 }
     */
 
-// (6)
+// (6)(7)(8)(9)
 
 int main(){
     double first=0;
@@ -92,6 +92,7 @@ int main(){
     string unit="";
     vector<string> acceptable={"cm","m","in","ft"};
     vector <double> conversion={0.01,1.0,0.0254,0.3048};
+    vector <double> at_end;
     double converted_to_m=0.0;
     double sum=0;
     while( cin >> first>> unit){
@@ -99,6 +100,7 @@ int main(){
         for(int j=0;j< acceptable.size();++j){
             if (unit==acceptable[j]){
                 converted_to_m=first*conversion[j];
+                at_end.push_back(converted_to_m);
                 flag=true;}
 
             if (i==0 && unit==acceptable[j]){
@@ -125,6 +127,10 @@ int main(){
             ++i;}
 
 
+        }
+        ranges::sort(at_end);
+        for(int i=0;i<at_end.size();++i){
+            cout<< at_end[i]<< " ";
         }
 }
 
