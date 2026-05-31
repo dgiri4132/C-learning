@@ -134,4 +134,35 @@ int main(){
         }
 }
 
+/* Review questions
+1- It means taking inputs, processing it, and producing output.
+2- what is given vs what is spitten out.
+3- correctly, simply and efficiently
+4-An expression produces a value.
+5-statement equates an expressioni fthat makes sense.
+6- Ivalue is something that has a memory location.
+    They +,+=,-=,*= require Ivalues because they need to write back to memory.
+7- Expression whose value is known at compile time.
+8- value written directly in the code.
+9- can use everywhere, they are made constant in the whole program.
+10- don't know what the value means , random unguessable numbers assinged.
+11- +,-,*,/
+12- %
+13- + 
+14- when you are comparing one variable to multiple specific values and they are int or char.
+15- can't do to multiple variables and no-no for string and doubles.
+16- first and second part specify start and end the third part specifies how many steps taken per each iteration.
+17- when you want to iterate a specific amount of time use for, when you want to iterate untill something happens, use while.
+18- it means the function takes in integer and turns it into char
+19- When you want to accomplish a speific thing that the standard library does not do.
+20- use mod function.
+21-concatenate, index , get its size.
+22-2
+23- set index to zero and end point to size-1 , then print one by one.
+27- no need to set an array limit and easy to work with
+25-it pushes the element that you want to put back of the last element in the vector.
+26- length of the vector.
+24- makes a vector of 26 char elements initialized to zero.
+28- ranges::sort(vector);
+*/
 
