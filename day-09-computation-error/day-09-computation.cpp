@@ -82,13 +82,15 @@ int main(){
 
 //(13)
 
-int main(){
+/*int main(){
     vector<bool> is_prime(101,true);
     vector<int> primes;
     int i=2;
+    is_prime[0]=false;
+    is_prime[1]=false;
     while(i<sqrt(101)){
         if( is_prime[i]!=false){
-            for(int j = i;j<101;++j){
+            for(int j = i+1;j<101;++j){
                 if( j%i==0){
                     is_prime[j]=false;
                 }
@@ -102,5 +104,11 @@ int main(){
         }
 
     }
-    
+    for (int p: primes){
+        cout<< p << "\n";
+    }
+
 }
+    */
+
+    
