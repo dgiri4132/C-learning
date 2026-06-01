@@ -154,7 +154,7 @@ using namespace std;
 
  //(8)
 // I have made this to output digits or spelled out both
- int main(){
+ /*int main(){
     string a;
     string b;
     char c;
@@ -175,8 +175,6 @@ using namespace std;
             if (a==numbers[i]) m=i;
         }
     }
-
-
     if( b.size()==1){
         if( b[0]>='0' && b[0]<='9'){
             n=b[0]-'0';
@@ -196,6 +194,8 @@ using namespace std;
     if( c==operators[2])
         cout<< "The product of "<< a <<" and "<< b <<" is: "<< m*n;
     if( c==operators[3])
-        cout<<a<< " divided by "<<b<<" is equal to: "<<m/n;   
-    
+        cout<<a<< " divided by "<<b<<" is equal to: "<<m/n;    
  }
+*/
+
+
