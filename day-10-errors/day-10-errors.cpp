@@ -1,3 +1,4 @@
+
 //Errors
 /*
 Let's start with run-time errors. It occurs after the program runs. Usually the output
@@ -58,7 +59,7 @@ The callee deals with errors
     you can apply the same thing to area as well with length and width arguments
 
     It isn't always easy to error handle in a function, and there are some respectable reasons
-    - The function is in a ibrary, may be you don't have the source code or the library has regular updates so 
+    - The function is in a library, may be you don't have the source code or the library has regular updates so 
     you need to change every time you update anything.
     
     - The called function doesn't know what to do in case of error:- This is typically the case for library functions
@@ -68,6 +69,7 @@ The callee deals with errors
     hard to figure out what went wrong.
 
     - Performance:- For a small function, the cost of a check can be more than the cost of calculating the result. 
+    
     Check your arguments in a function unless you have a good reason not to.
 
 
@@ -87,5 +89,53 @@ Error reporting 4.5.3 under Run-time error
     - Many functions do not have an "extra" return valye that they can use to indicate an error.
     For example, a function that reads an integer from input ( like >>) can obviously return any int value
     so tehre is no int that it could return to indicate failure.
-    
+
+    int area1=area(x,y);
+    if (area1<=0)
+        error("non-positive area");
+    int area2=framed_area(1,z);
+    int area3 = framed_area(y,z);
+    double ratio = double(area1)/area3;
+
+
+
+
     */
+
+// Try This 
+
+#include <iostream>
+#include <string>
+#include <cmath>
+#include "std_lib_facilities.h"
+
+using namespace std;
+
+
+
+int area(int length, int width);
+int framed_area( int x, int y);
+void test(int x, int y, int z){
+    int area1= area(x,y);
+    int area2=framed_area(1,z);
+    int area3= framed_area(y,z);
+
+}
+int main(){
+    test(4,5,6);
+    test(-1,5,6);
+}
+
+int area(int length, int width){
+    if (length<=0 || width<=0)
+        error("non-positive argument to area()");
+    return length * width;
+}
+
+int framed_area(int x, int y){
+    const  int frame_length=2;
+    if(x-frame_length<=0 || y-frame_length<=0)
+        error("non-positive arguement to framed_area()");
+        return x*y;
+}
+
