@@ -113,7 +113,7 @@ using namespace std;
 
 
 
-int area(int length, int width);
+/*int area(int length, int width);
 int framed_area( int x, int y);
 void test(int x, int y, int z){
     int area1= area(x,y);
@@ -136,6 +136,81 @@ int framed_area(int x, int y){
     const  int frame_length=2;
     if(x-frame_length<=0 || y-frame_length<=0)
         error("non-positive arguement to framed_area()");
-        return x*y;
+    return x*y;
+}*/
+
+
+// In this program, I have given all edge cases a valid output even for like frame_area hence 
+// I think I have possibly covered all the cases.
+
+/*
+Exceptions
+    The fundamental idea of exception is to separate detection of an error (which is done in a called function)
+    from the handling of an error( which should be done in the calling function) while ensuring that a detected error cannot be ignored; 
+    that is exceptions provide a mechanism that allows us to combine the best of the various approaches to error handling we have explored
+    so far.
+    So if the function cannot handle an error and its caller ALSO cannot handle it, it throws an exception and does not return normally
+
+    So there are callers who catch the exception which means they decribe what to do in a particular situation.
+    We can use stuff like try - block where it has exceptions that it can handle 
+    
+    Below is a version of area() using exceptions:
+
+    class Bad_area{};
+
+    int area ( int length, int width)
+
+    {
+        if (length<=0 || width <=0)
+            throw Bad_area{};
+        return length * width;
+
+    }
+    
+*/
+
+// Exceptions exercise
+class Bad_area{};
+class Bad_framed_area{};
+
+int area(int length, int width);
+int framed_area( int x, int y);
+void test(int x, int y, int z){
+    int area1= area(x,y);
+    int area2=framed_area(1,z);
+    int area3= framed_area(y,z);
+
 }
+int main()
+try{
+    test(4,5,6);
+    test(-1,5,6);
+}
+catch(Bad_area){
+    cout<< "Oops! bad argument to area()\n";
+}
+catch(Bad_framed_area){
+    cout<< "Oops! bad argument to framed_area()\n";
+}
+
+int area(int length, int width){
+    if (length<=0 || width<=0)
+        throw Bad_area{};
+    return length * width;
+}
+
+int framed_area(int x, int y){
+    const  int frame_length=2;
+    if(x-frame_length<=0 || y-frame_length<=0)
+        throw Bad_framed_area{};    
+    return (x-frame_length)*(y-frame_length);
+}
+
+/*
+Here you see above that this code handles all calls to area() both the one in main() and the two 
+through framed_area() and also for the framed_area() by t=itself
+main knows nothing about which function did a throw Bad_area{} and area knows nothing about which function
+to catch if any. This operation structure helps in large program written using many libraries. In such programs
+nobody would want to deal in the specific .
+*/
 
