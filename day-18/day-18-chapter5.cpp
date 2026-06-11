@@ -35,7 +35,6 @@ int main(){
     cout << "add an x to end expression ( e.g., 1+2*3x)";
     int lval=0;
     int rval=0;
-    int res=0;
     cin >>lval;
     if(!cin)
         error("no first operand");
@@ -55,7 +54,7 @@ int main(){
                 lval*=rval;
                 break;
             case '/':
-                lval/rval;
+                lval/=rval;
                 break;
             default:
                 cout << "Result: " << lval << '\n';
@@ -63,3 +62,11 @@ int main(){
         }
     }
 }
+
+/* Concept of tokens and why they are used
+    Here we can see that in the calculator problem, there is no precedance for anyone or anything.
+    The problems with looking ahead are how do we search for a * or a / among digits, plusses, minuses, and 
+    parantheses on several input lines?
+    How do we remember where a * was?
+    and How do we handle evaluation that's not strictly left-to-right(e.g., 1+2*3)?
+    */
