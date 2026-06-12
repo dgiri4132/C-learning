@@ -109,7 +109,9 @@ Comment on how this program is running:
     tok.push_back(t)
     }
     }
-
+     So all the fuss is that Token is a type now, there will be get_token() function that 
+    can read the input and a vector is made of tokens that you can use later which we will learn tommorow.
+    
     */
 
 
