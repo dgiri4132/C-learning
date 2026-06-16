@@ -1,10 +1,8 @@
-//Expressions: third time lucky
 #include <iostream>
 #include <string>
 #include <cmath>
-#include "std_lib_facilities.h"
-
-using namespace std;
+ using namespace std;
+ //Expressions: third time lucky
 
 
 class Token{
@@ -13,10 +11,8 @@ class Token{
     double value;
     Token (char k):kind{k}, value{0.0} {}
     Token(char k, double v): kind{k}, value{v} {}
-};
+}
 
-Token get_token();
-double expression();
 
 /*
 Primary expressions
@@ -81,8 +77,8 @@ double term(){
 
 
 double expression(){
-    double left= term();
-    Token t = get_token();
+    double left= term()
+    Token t = get_token()
     while (true){
         switch (t.kind){
             case '+':
