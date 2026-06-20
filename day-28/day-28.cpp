@@ -46,7 +46,7 @@ Token Token_stream :: get(){
     switch (ch){
         case '=':
         case 'x':
-        case '(': case ')': case '+': case '-': case '*': case '/':
+        case '(': case ')': case '+': case '-': case '*': case '/': case '!':
             return Token {ch};
         case '.':
         case '0': case '1': case '2': case '3': case '4':
@@ -62,22 +62,54 @@ default:
     }
 }
 
+
+
+double factorial(double n){
+    if (n<0)
+        error(" The number can't be negative");
+    else if(n==0)
+        return 1;
+    else
+        return n*factorial(n-1);
+    
+}
+
 Token_stream ts;
 double expression();
 
 double primary(){
     Token t=ts.get();
     switch(t.kind){
+        case '{':{
+            double k = expression();
+            t=ts.get();
+            if( t.kind != '}'){
+                error(" '}' expected");
+                
+            }
+            return k;
+            break;
+        }
         case '(':{
             double d = expression();
             t=ts.get();
             if(t.kind!=')'){
                 error(" ')' expected");
-                return d;
+            
             }
+            return d;
+            break;
             }
-        case '8':
-            return t.value;
+        case '8':{
+            Token s =ts.get();
+            if (s.kind == '!'){
+                return factorial(t.value);
+            }
+            else{
+                ts.putback(s);
+            return t.value;}
+        }
+
         default :
             error("Primary expected");
             return 0;
@@ -142,10 +174,12 @@ int main(){
                 break;
             if(t.kind == '=')
                 cout  << val << '\n';
-            else
+            else{
                 ts.putback(t);
                 val=expression();
         }
+    }
+
     }
     catch (exception &e){
         cerr << e.what()<<"\n";
