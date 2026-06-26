@@ -13,6 +13,9 @@ After that, the cin can read the whole value like Token_stream.
 We used cin.putback() instead of ts.putback() because the token may return 123 but the cin only returns 1, which
 is what we need. hence*/
 
+
+
+
 class Token{
     public:
     char kind;
