@@ -40,14 +40,17 @@ int main(){
     while (cin>> str){
         int count_cows = 0;
         int count_bulls = 0;
+        bool valid = true;
         for (char c: str){
             if(isdigit(c)){
                 cout << "Error: only letters allowed"<<"\n";
+                valid=false;
                 break;
             }
         }
+        if(!valid) continue;
         for (int i = 0; i<tbg.size();++i){
-            for (int j = 0; i<str.size(); ++j){
+            for (int j = 0; j<str.size(); ++j){
                 if (tbg[i]==str[j] && i == j){
                     count_bulls+=1;
                 }
