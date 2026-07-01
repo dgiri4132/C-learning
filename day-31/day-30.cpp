@@ -54,7 +54,7 @@ int main(){
                 }
                 else if(val2>1)
                     sub2 = " hundreds ";
-                else if (val2== 1)
+                else if (val2== 1 && listed[j+1])
                     sub2 = " hundred and ";
                 else if (val2== 1)
                     sub2 = " hundred ";
@@ -68,7 +68,7 @@ int main(){
                     sub1 = " tens and ";
                 else if(val1>1)
                     sub1 = " tens ";
-                else if (val1> 1)
+                else if (val1== 1 && listed[j+1])
                     sub1 = " ten and ";
                 else if (val1== 1)
                     sub1 = " ten ";
@@ -90,7 +90,10 @@ int main(){
         final_total = val_for_position0 +val_for_position3+val_for_position2+val_for_position1;
     
     }
-    
-        cout << final_total <<" is "<<val3<<sub3<<val2<<sub2<< val1<<sub1<<val0<<sub0<<".\n"; 
+    cout << final_total <<" is ";
+    if(val3) cout<<val3<<sub3;
+    if(val2)cout << val2 << sub2;
+    if(listed.size()>=2)cout<<val1<<sub1;
+    cout<<val0<<sub0<<".\n"; 
     
 }
