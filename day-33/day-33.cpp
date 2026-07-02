@@ -1,20 +1,20 @@
+/*
+Today we will be learning to address more syntax and handling more of these errors as well
+*/
 #include <iostream>
 #include <string>
 #include <cmath>
+
+// Trying to correct errors today
+#include <iostream>
+#include <cmath>
+#include <string>
 #include "std_lib_facilities.h"
 using namespace std;
-/*
-Let's start by revising what we had to do last time out.
-we made cases for token ts, if it was full, to return the full char because that would be 
-necessary, or priority. 
-Now for character, like actual character cases eg (,), or +, we return the characters themselves
-For the numbers we use putback() to putback the char gthat was consumed by get() in the first place.
-After that, the cin can read the whole value like Token_stream.
-We used cin.putback() instead of ts.putback() because the token may return 123 but the cin only returns 1, which
-is what we need. hence*/
 
 class Token{
     public:
+    
     char kind;
     double value;
     Token (char k): kind{k}, value{0.0}{};
@@ -22,18 +22,13 @@ class Token{
 };
 class Token_stream{
     public:
+    Token_stream(): full{false}, buffer{0} {}
     Token get();
     void putback(Token t);
     private:
         bool full=false;
-        Token buffer{0};
+        Token buffer;
 };
-void Token_stream::putback(Token t){
-    if (full)
-        error("putback() into a full buffer");
-    buffer=t;
-    full=true;
-}   
 
 Token Token_stream :: get(){
     if (full){
@@ -44,8 +39,8 @@ Token Token_stream :: get(){
     if(!(cin >> ch))
         error("no input");
     switch (ch){
-        case '=':
-        case 'x':
+        case ';':
+        case 'q':
         case '(': case ')': case '+': case '-': case '*': case '/':
             return Token {ch};
         case '.':
@@ -61,6 +56,12 @@ default:
     error("Bad token");
     }
 }
+void Token_stream::putback(Token t){
+    if (full)
+        error("putback() into a full buffer");
+    buffer=t;
+    full=true;
+}   
 
 Token_stream ts;
 double expression();
@@ -73,16 +74,14 @@ double primary(){
             t=ts.get();
             if(t.kind!=')'){
                 error(" ')' expected");
-                return d;
-            }
             return d;
             }
+        }
         case '8':
             return t.value;
         default :
             error("Primary expected");
             return 0;
-        
         
     }
 }
@@ -111,7 +110,6 @@ double term(){// We're doing the same thing to term as we did to expression
     }
 }
 
-
 double expression(){// We're gonna edit this to have a putback function for caller to use
     double left= term();// when it isn't used by the expression()
     Token t = ts.get();
@@ -133,21 +131,27 @@ double expression(){// We're gonna edit this to have a putback function for call
     }
 }
 
-
 int main(){
     try{
-        double val = 0;
         while (cin){
-            Token t=ts.get();
-            if (t.kind == 'x')
-                break;
-            if(t.kind == '=')
-                cout  << val << '\n';
-            else{
-                ts.putback(t);
-                val=expression();
-            }
+            cout << ">";
+            Token t =ts.get();
+            while (t.kind == ';')
+                t = ts.get();
+            if (t.kind == 'q')
+                return 0;
+            ts.putback(t);
+            cout << "=" << expression()<< '\n';
         }
+        return 0;
+    /*
+    Here above there are a few things to consider before making changes
+    The semicolon part when cases like 1+2;q are given take a time and 
+    also call val again which calls primary in the end and there is no space for
+    q in primary, it is not defined. so it results in an error . In the case of 
+    1+2 q it stores the value but as q case is over all other cases, it gets discontinued
+    even before printing everything. The while loop keeps consuming until the semicolon 
+    thing ends*/
     }
     catch (exception &e){
         cerr << e.what()<<"\n";
@@ -157,3 +161,10 @@ int main(){
         return 2;
     }
 }
+
+/*
+In expression, when the Token returned by get_token() is not a + or a -, we just return. We don't use that token
+anywhere and we also don't store it anywhere for any other function to use later. Same thing is with term() as well
+so now we change the expression() and also term as well.
+Basically, it prevents the data/ token spillage when term or expression donot need or their case does not match
+*/

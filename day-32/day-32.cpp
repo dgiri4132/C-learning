@@ -12,9 +12,7 @@ as per output
 */
 
 int main(){
-    
     string s;
-    int val;
     cout<< "Please enter the number: \n";
     cout << "Enter 'quit' to quit\n";
     while (cin>>s){
@@ -23,6 +21,7 @@ int main(){
         }
         int total = 0;
         for (int i = 0; i<s.size();++i){
+                int val;
                 val = s[i]-'0';
                 total = total*10 + val;
             }
