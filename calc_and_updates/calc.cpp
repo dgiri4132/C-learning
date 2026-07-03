@@ -12,6 +12,11 @@ Today we will be learning to address more syntax and handling more of these erro
 #include "std_lib_facilities.h"
 using namespace std;
 
+constexpr char number = '8';
+constexpr char quit = 'q';
+constexpr char print = ';';
+constexpr string result = "= ";
+constexpr string prompt = ">";
 class Token{
     public:
     
@@ -65,7 +70,11 @@ void Token_stream::putback(Token t){
 
 Token_stream ts;
 double expression();
-
+/*
+Update in primary needed:
+for negative numbers, we need to add the acceptance of '-' and '+' because some asshole will try to use
+plus as well just to test.
+*/
 double primary(){
     Token t=ts.get();
     switch(t.kind){
@@ -78,6 +87,10 @@ double primary(){
         }
         case '8':
             return t.value;
+        case '+':
+            return primary();
+        case '-':
+            return -primary();
         default :
             error("Primary expected");
             return 0;
@@ -102,6 +115,15 @@ double term(){// We're doing the same thing to term as we did to expression
                 t = ts.get();
                 break;
             }
+            case '%':
+                {
+                    double d = primary();
+                    if (d==0)
+                        error("cant modulo by zero");
+                    left = fmod(left,d);
+                    t=ts.get();
+                    break;
+                }
             default:
                 ts.putback(t);
                 return left;
@@ -133,14 +155,14 @@ double expression(){// We're gonna edit this to have a putback function for call
 int main(){
     try{
         while (cin){
-            cout << ">";
+            cout << prompt;
             Token t =ts.get();
-            while (t.kind == ';')
+            while (t.kind == print)
                 t = ts.get();
-            if (t.kind == 'q')
+            if (t.kind == quit)
                 return 0;
             ts.putback(t);
-            cout << "=" << expression()<< '\n';
+            cout << result << expression()<< '\n';
         }
         return 0;
     /*
