@@ -30,11 +30,23 @@ class Token_stream{
     Token_stream(): full{false}, buffer{0} {}
     Token get();
     void putback(Token t);
+    void ignore(char c);
     private:
         bool full=false;
-        Token buffer;
+        Token buffer=0;
 };
+void Token_stream :: ignore(char c){
+    if (full && c==buffer.kind){
+        full = false;
+        return;
+    }
+    full = false;
 
+    char ch = 0;
+    while(cin >>ch)
+        if (ch ==c)
+            return;
+}
 Token Token_stream :: get(){
     if (full){
         full = false;
@@ -46,7 +58,13 @@ Token Token_stream :: get(){
     switch (ch){
         case ';':
         case 'q':
-        case '(': case ')': case '+': case '-': case '*': case '/':
+        case '(': 
+        case ')': 
+        case '+': 
+        case '-': 
+        case '*': 
+        case '/':
+        case '%':
             return Token {ch};
         case '.':
         case '0': case '1': case '2': case '3': case '4':
@@ -66,10 +84,14 @@ void Token_stream::putback(Token t){
         error("putback() into a full buffer");
     buffer=t;
     full=true;
-}   
+}
+
 
 Token_stream ts;
 double expression();
+void clean_up_mess(){
+    ts.ignore(print);
+}
 /*
 Update in primary needed:
 for negative numbers, we need to add the acceptance of '-' and '+' because some asshole will try to use
@@ -152,18 +174,27 @@ double expression(){// We're gonna edit this to have a putback function for call
     }
 }
 
+void calculate()
+{
+    while (cin){
+       try{ cout << prompt;
+        Token t = ts.get();
+        while (t.kind == print)
+            t = ts.get();
+        if(t.kind == quit)
+            return;
+        ts.putback(t);
+        cout << result << expression()<< '\n';
+    }
+    catch(exception& e){
+        cerr << e.what() << '\n';
+        clean_up_mess();
+    }
+}
+}
 int main(){
     try{
-        while (cin){
-            cout << prompt;
-            Token t =ts.get();
-            while (t.kind == print)
-                t = ts.get();
-            if (t.kind == quit)
-                return 0;
-            ts.putback(t);
-            cout << result << expression()<< '\n';
-        }
+        calculate();
         return 0;
     /*
     Here above there are a few things to consider before making changes
@@ -176,6 +207,7 @@ int main(){
     }
     catch (exception &e){
         cerr << e.what()<<"\n";
+        return 1;
     }
     catch(...){
         cerr << "exception \n";
