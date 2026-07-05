@@ -35,6 +35,12 @@ class Token_stream{
         bool full=false;
         Token buffer=0;
 };
+class Variable{
+    public:
+    string name;
+    double value;
+};
+
 void Token_stream :: ignore(char c){
     if (full && c==buffer.kind){
         full = false;
@@ -174,6 +180,49 @@ double expression(){// We're gonna edit this to have a putback function for call
     }
 }
 
+double define_name(string var, double val);
+
+double declaration(){
+    Token t =ts.get();
+    if(t.kind != name)
+        error("Name expected in declaration");
+    
+    Token t2 = ts.get();
+    if(t2.kind!= '=')
+        error("= missing in declaration of ", t.name);
+    double d = expression();
+    define_name(t.name, d);
+    return d;
+}
+
+
+double statement(){
+    Token t = ts.get();
+    switch(t.kind){
+        case "let":
+            return declaration();
+        default:
+        ts.putback(t);
+        return expression();
+        }
+}
+
+vector <Variable> var_table;
+
+bool is_declared(string var){
+    for(const Variable& v: var_table)
+        if( v.name == var)
+            return true;
+    return false;
+}
+
+double define_name(string var, double val){
+    if (is_declared(var))
+        error(var, " declared twice");
+    var_table.push_back(Variable{var,val});
+    return;
+}
+
 void calculate()
 {
     while (cin){
@@ -184,7 +233,7 @@ void calculate()
         if(t.kind == quit)
             return;
         ts.putback(t);
-        cout << result << expression()<< '\n';
+        cout << result << statement()<< '\n';
     }
     catch(exception& e){
         cerr << e.what() << '\n';
@@ -192,6 +241,16 @@ void calculate()
     }
 }
 }
+
+
+double get_value(string s){
+    for(const Variable& v: var_table){
+        if(v.name == s)
+            return v.value;
+        error("trying to read undefined variable ",s);
+    }
+}
+
 int main(){
     try{
         calculate();
