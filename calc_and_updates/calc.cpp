@@ -17,13 +17,19 @@ constexpr char quit = 'q';
 constexpr char print = ';';
 constexpr string result = "= ";
 constexpr string prompt = ">";
+constexpr char name = 'a';
+constexpr char let = 'L';
+constexpr string declkey = "let";
+
 class Token{
     public:
     
     char kind;
     double value;
+    string name;
     Token (char k): kind{k}, value{0.0}{};
     Token (char k, double v): kind{k}, value{v}{};
+    Token (char k, string n) :kind{k}, name{n} {};
 };
 class Token_stream{
     public:
@@ -82,6 +88,17 @@ case '5': case '6': case '7': case '8': case '9':
     return Token{'8', val};
 }
 default: 
+    if (isalpha(ch)){
+        cin.putback(ch);
+        string s;
+        s+=ch;
+        while(cin.get(ch) && (isalpha(ch) || isdigit(ch)))
+            s+=ch;
+        cin.putback(ch);
+        if (s == declkey)
+            return Token{let};
+        return Token{name,s};
+    }
     error("Bad token");
     }
 }
