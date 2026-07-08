@@ -89,7 +89,6 @@ case '5': case '6': case '7': case '8': case '9':
 }
 default: 
     if (isalpha(ch)){
-        cin.putback(ch);
         string s;
         s+=ch;
         while(cin.get(ch) && (isalpha(ch) || isdigit(ch)))
@@ -216,7 +215,7 @@ double declaration(){
 double statement(){
     Token t = ts.get();
     switch(t.kind){
-        case "let":
+        case let:
             return declaration();
         default:
         ts.putback(t);
@@ -237,7 +236,7 @@ double define_name(string var, double val){
     if (is_declared(var))
         error(var, " declared twice");
     var_table.push_back(Variable{var,val});
-    return;
+    return val;
 }
 
 void calculate()

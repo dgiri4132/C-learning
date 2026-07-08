@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/darshangiri/C-learning/calc_and_updates/calc'
+relocations:     []
+...
