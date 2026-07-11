@@ -20,7 +20,8 @@ constexpr string prompt = ">";
 constexpr char name = 'a';
 constexpr char let = 'L';
 constexpr string declkey = "let";
-
+constexpr double k = 1000;
+constexpr char sqr = 'S';
 class Token{
     public:
     
@@ -77,6 +78,7 @@ Token Token_stream :: get(){
         case '*': 
         case '/':
         case '%':
+        case '=':
             return Token {ch};
         case '.':
         case '0': case '1': case '2': case '3': case '4':
@@ -89,6 +91,7 @@ case '5': case '6': case '7': case '8': case '9':
 }
 default: 
     if (isalpha(ch)){
+        cin.putback(ch);
         string s;
         s+=ch;
         while(cin.get(ch) && (isalpha(ch) || isdigit(ch)))
@@ -96,6 +99,8 @@ default:
         cin.putback(ch);
         if (s == declkey)
             return Token{let};
+        if (s == "sqrt")
+            return Token{sqr};
         return Token{name,s};
     }
     error("Bad token");
@@ -135,6 +140,18 @@ double primary(){
             return primary();
         case '-':
             return -primary();
+        case 'S':
+            Token nex = ts.get();
+            if (nex.kind !='(')
+                error("'(' expected after sqrt");
+            double d = expression();
+            Token close = ts.get();
+            if (close.kind !=')')
+                error("')' expected after sqrt argument");
+            if (d<0)
+                error("sqrt of negative number");
+            double sq = sqrt(d);
+            return sq;
         default :
             error("Primary expected");
             return 0;
