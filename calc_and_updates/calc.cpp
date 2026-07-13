@@ -18,10 +18,10 @@ constexpr char print = ';';
 constexpr string result = "= ";
 constexpr string prompt = ">";
 constexpr char name = 'a';
-constexpr char let = 'L';
-constexpr string declkey = "let";
+constexpr char let = '#';
 constexpr double k = 1000;
 constexpr char sqr = 'S';
+constexpr char power = 'P';
 class Token{
     public:
     
@@ -70,7 +70,6 @@ Token Token_stream :: get(){
         error("no input");
     switch (ch){
         case ';':
-        case 'q':
         case '(': 
         case ')': 
         case '+': 
@@ -79,6 +78,8 @@ Token Token_stream :: get(){
         case '/':
         case '%':
         case '=':
+        case '#':
+        case ',':
             return Token {ch};
         case '.':
         case '0': case '1': case '2': case '3': case '4':
@@ -91,16 +92,17 @@ case '5': case '6': case '7': case '8': case '9':
 }
 default: 
     if (isalpha(ch)){
-        cin.putback(ch);
         string s;
         s+=ch;
         while(cin.get(ch) && (isalpha(ch) || isdigit(ch)))
             s+=ch;
         cin.putback(ch);
-        if (s == declkey)
-            return Token{let};
         if (s == "sqrt")
             return Token{sqr};
+        if (s== "pow")
+            return Token{power};
+        if (s == "quit")
+            return Token{quit};
         return Token{name,s};
     }
     error("Bad token");
@@ -140,7 +142,7 @@ double primary(){
             return primary();
         case '-':
             return -primary();
-        case 'S':
+        case 'S':{
             Token nex = ts.get();
             if (nex.kind !='(')
                 error("'(' expected after sqrt");
@@ -152,6 +154,22 @@ double primary(){
                 error("sqrt of negative number");
             double sq = sqrt(d);
             return sq;
+        }
+        case 'P':{
+            Token follow = ts.get();
+            if(follow.kind !='(')
+                error("'(' expected after power. ");
+            double s = expression();
+            Token comma = ts.get();
+            if (comma.kind!=',')
+                error("There needs to be a comma in between.");
+            double x = expression();
+            Token end = ts.get();
+            if(end.kind !=')')
+                error("')' exxpected after power calculation.");
+            return pow(s,x);
+        }
+
         default :
             error("Primary expected");
             return 0;
@@ -263,7 +281,7 @@ void calculate()
         Token t = ts.get();
         while (t.kind == print)
             t = ts.get();
-        if(t.kind == quit)
+        if (t.kind == quit)
             return;
         ts.putback(t);
         cout << result << statement()<< '\n';
