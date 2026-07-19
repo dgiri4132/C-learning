@@ -47,7 +47,7 @@ class Variable{
     string name;
     double value;
 };
-
+vector <Variable> var_table;
 void Token_stream :: ignore(char c){
     if (full && c==buffer.kind){
         full = false;
@@ -74,10 +74,10 @@ Token Token_stream :: get(){
         case ')': 
         case '+': 
         case '-': 
+        case '=':
         case '*': 
         case '/':
         case '%':
-        case '=':
         case '#':
         case ',':
             return Token {ch};
@@ -91,10 +91,10 @@ case '5': case '6': case '7': case '8': case '9':
     return Token{'8', val};
 }
 default: 
-    if (isalpha(ch)){
+    if (isalpha(ch) || ch == '_'){
         string s;
         s+=ch;
-        while(cin.get(ch) && (isalpha(ch) || isdigit(ch)))
+        while(cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch ==  '_'))
             s+=ch;
         cin.putback(ch);
         if (s == "sqrt")
@@ -169,7 +169,25 @@ double primary(){
                 error("')' exxpected after power calculation.");
             return pow(s,x);
         }
-
+        case 'a':{
+            Token next = ts.get();
+            if (next.kind == '='){
+            double d = expression();
+            for (Variable& v: var_table)
+            if (v.name == t.name){
+                v.value = d;
+                return d;
+            }
+            error(t.name, "not declared");
+        }
+        else {
+            ts.putback(next);
+            for (Variable&v: var_table)
+            if (v.name == t.name)
+                return v.value;
+            error(t.name, "not declared");
+        }
+        }
         default :
             error("Primary expected");
             return 0;
@@ -258,7 +276,7 @@ double statement(){
         }
 }
 
-vector <Variable> var_table;
+
 
 bool is_declared(string var){
     for(const Variable& v: var_table)
