@@ -177,11 +177,15 @@ double primary(){
             Token next = ts.get();
             if (next.kind == '='){
             double d = expression();
-            for (Variable& v: var_table)
-            if (v.name == t.name){
+            for (Variable& v: var_table){
+            if (v.name == t.name && v.is_const != true){
                 v.value = d;
                 return d;
             }
+            else if (v.name == t.name && v.is_const == true){
+               error(t.name, "cannot assign to a constant");
+            }
+        }
             error(t.name, "not declared");
         }
         else {
@@ -193,26 +197,6 @@ double primary(){
         }
         break;
     }
-        case '@':{
-            Token next1 = ts.get();
-            if (next1.kind == '='){
-            double d = expression();
-            for (Variable& v: var_table)
-            if (v.name == t.name){
-                v.value = d;
-                return d;
-            }
-            error(t.name, "not declared");
-        }
-        else {
-            ts.putback(next1);
-            for (Variable&v: var_table)
-            if (v.name == t.name)
-                return v.value;
-            error(t.name, "not declared");
-        }
-        }
-
         default :
             error("Primary expected");
             return 0;
@@ -274,18 +258,18 @@ double expression(){// We're gonna edit this to have a putback function for call
     }
 }
 
-double define_name(string var, double val);
+double define_name(string var, double val, bool cons);
 
-double declaration(){
+double declaration(bool cons){
     Token t =ts.get();
-    if(t.kind != name)
+    if(t.kind != name )
         error("Name expected in declaration");
     
     Token t2 = ts.get();
     if(t2.kind!= '=')
         error("= missing in declaration of ", t.name);
     double d = expression();
-    define_name(t.name, d);
+    define_name(t.name, d, cons);
     return d;
 }
 
@@ -294,7 +278,10 @@ double statement(){
     Token t = ts.get();
     switch(t.kind){
         case let:
-            return declaration();
+            return declaration(false);
+        case constant:
+            
+            return declaration(true);
         default:
         ts.putback(t);
         return expression();
@@ -310,10 +297,10 @@ bool is_declared(string var){
     return false;
 }
 
-double define_name(string var, double val){
+double define_name(string var, double val, bool cons){
     if (is_declared(var))
         error(var, " declared twice");
-    var_table.push_back(Variable{var,val});
+    var_table.push_back(Variable{var,val, cons});
     return val;
 }
 
