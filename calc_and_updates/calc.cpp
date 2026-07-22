@@ -22,6 +22,7 @@ constexpr char let = '#';
 constexpr double k = 1000;
 constexpr char sqr = 'S';
 constexpr char power = 'P';
+constexpr char constant = '@';
 class Token{
     public:
     
@@ -46,6 +47,7 @@ class Variable{
     public:
     string name;
     double value;
+    bool is_const;
 };
 vector <Variable> var_table;
 void Token_stream :: ignore(char c){
@@ -103,6 +105,8 @@ default:
             return Token{power};
         if (s == "quit")
             return Token{quit};
+        if (s == "const")
+            return Token{constant};
         return Token{name,s};
     }
     error("Bad token");
@@ -187,7 +191,28 @@ double primary(){
                 return v.value;
             error(t.name, "not declared");
         }
+        break;
+    }
+        case '@':{
+            Token next1 = ts.get();
+            if (next1.kind == '='){
+            double d = expression();
+            for (Variable& v: var_table)
+            if (v.name == t.name){
+                v.value = d;
+                return d;
+            }
+            error(t.name, "not declared");
         }
+        else {
+            ts.putback(next1);
+            for (Variable&v: var_table)
+            if (v.name == t.name)
+                return v.value;
+            error(t.name, "not declared");
+        }
+        }
+
         default :
             error("Primary expected");
             return 0;
