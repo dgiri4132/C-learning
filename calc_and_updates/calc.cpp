@@ -49,7 +49,53 @@ class Variable{
     double value;
     bool is_const;
 };
-vector <Variable> var_table;
+class Symbol_table{
+    public:
+    double get_value(string s);
+    bool is_declared(string var);
+    void set_value(string s, double d);
+    double declare(bool c);
+    private:
+    vector<Variable> var_table;
+    
+};
+
+ void Symbol_table:: set_value(string s, double d){
+    for (Variable& v : var_table)
+        if (v.name == s){
+            v.value = d;
+            return;
+        }
+    error("trying to write undefined variable", s);
+}
+
+double Symbol_table ::get_value(string s){
+    for (const Variable& v : var_table)
+        if(v.name == s)
+            return v.value;
+        error("trying to read undefined variable", s);
+}
+
+double Symbol_table :: declare(bool cons){
+    Token t =ts.get();
+    if(t.kind != name )
+        error("Name expected in declaration");
+    
+    Token t2 = ts.get();
+    if(t2.kind!= '=')
+        error("= missing in declaration of ", t.name);
+    double d = expression();
+    define_name(t.name, d, cons);
+    return d;
+}
+
+bool Symbol_table ::is_declared(string var){
+    for(const Variable& v: var_table)
+        if( v.name == var)
+            return true;
+    return false;
+}
+
 void Token_stream :: ignore(char c){
     if (full && c==buffer.kind){
         full = false;
@@ -125,6 +171,10 @@ double expression();
 void clean_up_mess(){
     ts.ignore(print);
 }
+
+
+
+
 /*
 Update in primary needed:
 for negative numbers, we need to add the acceptance of '-' and '+' because some asshole will try to use
@@ -257,9 +307,6 @@ double expression(){// We're gonna edit this to have a putback function for call
 
     }
 }
-
-double define_name(string var, double val, bool cons);
-
 double declaration(bool cons){
     Token t =ts.get();
     if(t.kind != name )
@@ -272,7 +319,7 @@ double declaration(bool cons){
     define_name(t.name, d, cons);
     return d;
 }
-
+double define_name(string var, double val, bool cons);
 
 double statement(){
     Token t = ts.get();
@@ -289,13 +336,6 @@ double statement(){
 }
 
 
-
-bool is_declared(string var){
-    for(const Variable& v: var_table)
-        if( v.name == var)
-            return true;
-    return false;
-}
 
 double define_name(string var, double val, bool cons){
     if (is_declared(var))
