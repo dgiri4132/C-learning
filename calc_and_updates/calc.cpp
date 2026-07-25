@@ -60,42 +60,6 @@ class Symbol_table{
     
 };
 
- void Symbol_table:: set_value(string s, double d){
-    for (Variable& v : var_table)
-        if (v.name == s){
-            v.value = d;
-            return;
-        }
-    error("trying to write undefined variable", s);
-}
-
-double Symbol_table ::get_value(string s){
-    for (const Variable& v : var_table)
-        if(v.name == s)
-            return v.value;
-        error("trying to read undefined variable", s);
-}
-
-double Symbol_table :: declare(string var, double val, bool cons){
-    Token t =ts.get();
-    if(t.kind != name )
-        error("Name expected in declaration");
-    
-    Token t2 = ts.get();
-    if(t2.kind!= '=')
-        error("= missing in declaration of ", t.name);
-    double d = expression();
-    define_name(t.name, d, cons);
-    return d;
-}
-
-bool Symbol_table ::is_declared(string var){
-    for(const Variable& v: var_table)
-        if( v.name == var)
-            return true;
-    return false;
-}
-
 void Token_stream :: ignore(char c){
     if (full && c==buffer.kind){
         full = false;
@@ -158,6 +122,8 @@ default:
     error("Bad token");
     }
 }
+
+Token_stream ts;
 void Token_stream::putback(Token t){
     if (full)
         error("putback() into a full buffer");
@@ -166,14 +132,48 @@ void Token_stream::putback(Token t){
 }
 
 
-Token_stream ts;
 double expression();
 void clean_up_mess(){
     ts.ignore(print);
 }
 
+ void Symbol_table:: set_value(string s, double d){
+    for (Variable& v : var_table)
+        if (v.name == s && v.is_const == false){
+            v.value = d;
+            return;
+        }
+        else if (v.name == s && v.is_const == true){
+               error(s, "cannot assign to a constant");
+            }
+    error("trying to write undefined variable", s);
+}
+
+double Symbol_table ::get_value(string s){
+    for (const Variable& v : var_table)
+        if(v.name == s)
+            return v.value;
+        error("trying to read undefined variable", s);
+}
 
 
+
+bool Symbol_table ::is_declared(string var){
+    for(const Variable& v: var_table)
+        if( v.name == var)
+            return true;
+    return false;
+}
+double Symbol_table :: declare(string var, double val, bool cons){
+    if (is_declared(var) == true)
+        error( var, " already declared");
+    else {
+        var_table.push_back(Variable{var,val,cons});
+    }
+
+    return val;
+}
+Symbol_table sb;
 
 /*
 Update in primary needed:
@@ -227,23 +227,12 @@ double primary(){
             Token next = ts.get();
             if (next.kind == '='){
             double d = expression();
-            for (Variable& v: var_table){
-            if (v.name == t.name && v.is_const != true){
-                v.value = d;
-                return d;
-            }
-            else if (v.name == t.name && v.is_const == true){
-               error(t.name, "cannot assign to a constant");
-            }
-        }
-            error(t.name, "not declared");
+            sb.set_value(t.name, d);
+            return d;
         }
         else {
             ts.putback(next);
-            for (Variable&v: var_table)
-            if (v.name == t.name)
-                return v.value;
-            error(t.name, "not declared");
+            return sb.get_value(t.name);
         }
         break;
     }
@@ -316,10 +305,9 @@ double declaration(bool cons){
     if(t2.kind!= '=')
         error("= missing in declaration of ", t.name);
     double d = expression();
-    declare(t.name, d, cons)
+    sb.declare(t.name, d, cons);
     return d;
 }
-double define_name(string var, double val, bool cons);
 
 double statement(){
     Token t = ts.get();
@@ -335,14 +323,6 @@ double statement(){
         }
 }
 
-
-
-double define_name(string var, double val, bool cons){
-    if (is_declared(var))
-        error(var, " declared twice");
-    var_table.push_back(Variable{var,val, cons});
-    return val;
-}
 
 void calculate()
 {
@@ -361,15 +341,6 @@ void calculate()
         clean_up_mess();
     }
 }
-}
-
-
-double get_value(string s){
-    for(const Variable& v: var_table){
-        if(v.name == s)
-            return v.value;
-        error("trying to read undefined variable ",s);
-    }
 }
 
 int main(){
