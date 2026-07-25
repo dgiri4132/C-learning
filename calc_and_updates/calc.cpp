@@ -54,7 +54,7 @@ class Symbol_table{
     double get_value(string s);
     bool is_declared(string var);
     void set_value(string s, double d);
-    double declare(bool c);
+    double declare( string var, double val, bool c);
     private:
     vector<Variable> var_table;
     
@@ -76,7 +76,7 @@ double Symbol_table ::get_value(string s){
         error("trying to read undefined variable", s);
 }
 
-double Symbol_table :: declare(bool cons){
+double Symbol_table :: declare(string var, double val, bool cons){
     Token t =ts.get();
     if(t.kind != name )
         error("Name expected in declaration");
@@ -316,7 +316,7 @@ double declaration(bool cons){
     if(t2.kind!= '=')
         error("= missing in declaration of ", t.name);
     double d = expression();
-    define_name(t.name, d, cons);
+    declare(t.name, d, cons)
     return d;
 }
 double define_name(string var, double val, bool cons);
