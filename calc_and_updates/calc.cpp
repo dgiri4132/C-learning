@@ -78,8 +78,17 @@ Token Token_stream :: get(){
         return buffer;
     }
     char ch = 0;
-    if(!(cin >> ch))
+    while(cin.get(ch)){
+        if (ch == '\n')
+            return Token{print};
+        else if(isspace(ch))
+            continue;
+        else
+        break;
+    }
+    if(!cin){
         error("no input");
+    }
     switch (ch){
         case ';':
         case '(': 
