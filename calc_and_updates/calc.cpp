@@ -233,6 +233,41 @@ double primary(){
             return pow(s,x);
         }
         case 'a':{
+            if (t.name == "help"){
+                cout << "Here are the basic functions: "<< "\n";
+                cout << R"(Arithmetic
+
++, -, *, /, % (modulo, via fmod)
+Parentheses ( ) for grouping
+Unary +/- (e.g., -5, +3)
+Plain numbers, including decimals (3.14)
+Built-in functions
+
+sqrt(x) — errors if x is negative
+pow(x, y) — comma-separated arguments
+Variables
+
+# name = expr; — declares a new, ordinary (mutable) variable (the # character is what let maps to internally)
+const name = expr; — declares a new variable that can never be reassigned
+name (bare) — reads the current value of an already-declared variable
+name = expr; — reassigns an existing variable (errors if it's const, or if it was never declared)
+Control / session
+
+quit — ends the program
+; — explicit end-of-statement marker (prints the result)
+A bare newline (just pressing Enter) — now also ends a statement, same as ;, thanks to the exercise you just finished
+Ordinary whitespace (spaces, tabs) between tokens — silently ignored, doesn't need a specific handler anymore
+Errors it correctly catches
+
+Redeclaring an existing name
+Reading or writing an undeclared variable
+Assigning to a const
+Mismatched parentheses, missing commas in pow(...), division/modulo by zero, sqrt of a negative number, running out of input entirely
+)";
+            } 
+            if(t.name == "k"){
+                return k;
+            }
             Token next = ts.get();
             if (next.kind == '='){
             double d = expression();
@@ -389,3 +424,8 @@ Lets take the example of 12+3
 here firstly the token 1 is consumed, finds out its a number and cin's it again,until we run out of numbers. When it comes to +, it consumes +,
 finds out it is not /,* and then returns to expression( as after primary, we enter terms), and expression looks for the buffer, finds the one
 and then uses it instead and then 3 is again used as the usual case.*/
+
+/*
+There are three improvements that I need to find for the question 9 
+They are :- adding what k means;
+adding */
