@@ -101,6 +101,7 @@ Token Token_stream :: get(){
         case '%':
         case '#':
         case ',':
+        case '^':
             return Token {ch};
         case '.':
         case '0': case '1': case '2': case '3': case '4':
@@ -120,7 +121,7 @@ default:
         cin.putback(ch);
         if (s == "sqrt")
             return Token{sqr};
-        if (s== "pow")
+        if(s == "pow")
             return Token{power};
         if (s == "quit")
             return Token{quit};
@@ -286,18 +287,31 @@ Mismatched parentheses, missing commas in pow(...), division/modulo by zero, sqr
         
     }
 }
-
+double mid_term(){
+    double left = primary();
+    Token t = ts.get();
+    switch(t.kind){
+        case '^':{
+            double d = primary();
+            return pow(left,d);
+        }
+        default :{
+            ts.putback(t);
+            return left;
+    }
+}
+}
 double term(){// We're doing the same thing to term as we did to expression
-    double left= primary();
+    double left= mid_term();
     Token t = ts.get();
     while (true){
         switch(t.kind){
             case '*':
-            left*=primary();
+            left*=mid_term();
                 t=ts.get();
                 break;
             case '/':{
-                double d = primary();
+                double d = mid_term();
                 if(d==0)
                     error("The number is zero.");
                 left/=d;
@@ -306,7 +320,7 @@ double term(){// We're doing the same thing to term as we did to expression
             }
             case '%':
                 {
-                    double d = primary();
+                    double d = mid_term();
                     if (d==0)
                         error("cant modulo by zero");
                     left = fmod(left,d);
@@ -428,4 +442,5 @@ and then uses it instead and then 3 is again used as the usual case.*/
 /*
 There are three improvements that I need to find for the question 9 
 They are :- adding what k means;
-adding */
+adding '^' for power
+saving answer variable maybe */
