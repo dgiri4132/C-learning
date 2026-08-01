@@ -60,18 +60,6 @@ class Symbol_table{
     
 };
 
-void Token_stream :: ignore(char c){
-    if (full && c==buffer.kind){
-        full = false;
-        return;
-    }
-    full = false;
-
-    char ch = 0;
-    while(cin >>ch)
-        if (ch ==c)
-            return;
-}
 Token Token_stream :: get(){
     if (full){
         full = false;
@@ -110,6 +98,7 @@ case '5': case '6': case '7': case '8': case '9':
     cin.putback(ch);
     double val = 0;
     cin >> val;
+    narrow_cast<int>(val);
     return Token{'8', val};
 }
 default: 
@@ -132,6 +121,21 @@ default:
     error("Bad token");
     }
 }
+
+void Token_stream :: ignore(char c){
+ if (full == true && c == buffer.kind){
+    full = false;
+    return;
+ }
+char ch = 0;
+while(true){
+    Token t = get();
+    if (t.kind == c)
+        return;
+}
+    
+}
+
 
 Token_stream ts;
 void Token_stream::putback(Token t){
