@@ -1,0 +1,25 @@
+Chapter 7.1 start 
+A Declaration is a statement that intorduces a name into a scope
+A Definition is a type of declaration that also fully specifies the entity declared.
+Both are offered in C++ because the definition/declaration distinction allows us to separate a program into many parts that can be compiled separately.
+
+The extern keyword used in the second declaration of x simply states that this declaration of x isn't 
+a definition.
+
+There are many kinds of entities that a programmer can define in C++. The most interesting are
+Variable and constants
+functions
+namespaces
+modules
+types 
+templates 
+concepts
+
+int a ;
+double d = 7;
+vector<int> vi(10);
+vector<int> vi2 {1,2,3,4};
+
+const int x = 7;
+const int x2 {9};
+const int y;
