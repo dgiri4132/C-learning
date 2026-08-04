@@ -23,3 +23,107 @@ vector<int> vi2 {1,2,3,4};
 const int x = 7;
 const int x2 {9};
 const int y;
+
+extern tells the compiler " this name exists somewhere, but I'm not defining it here - Just declaring it so you know it exists somewhere else
+It's like saying there's an int called counter somewhere, link against it
+
+A scope is a region of program text. A name is declared in a scope is valid (is "in scope")
+from the point of its declaration until the end of the scope in which it was declared. For example:
+
+here 
+
+void f()
+{
+    g() // error isn't (yet) in scope
+}
+
+void g()
+{
+    f();
+}
+
+void h()
+{
+    int x = y;
+    int y = x;
+    g();
+}
+
+There are several kinds of scopes that we use to control where our names can be used:
+
+The global scope: the area of text outside any other scope.
+A module scope : the area of text within a module.
+A namespace scope : a named scope nested in the global scope or in another namespace
+A class scope : the area of text within a class.
+A local scope : between {...} braces of a block or in a function argument list
+A statement scope : in a for-statement
+
+The main purpose of a scope is to keep names local, so that they won't interfere with names 
+declared elsewhere. For example:
+
+int max(int a, int b)   max is global; a and b are global
+{
+    int m;      m is local
+    if(a>=b)
+        m = a;
+    else 
+        m = b;
+    return m;
+}
+
+int abs(int a)
+{
+    return (a>=0)? a: -a;
+}
+The ? that is used in abs() is called an arithmetic if or a conditional expression. The value of 
+(a>=0)?a:-a is a if a>=0 and -a otherwise. 
+Remember : try to keep names as local as possible. Real programs have many thousands of named 
+entities hence creating the need to making most programs local.
+
+So the stuff that I learned here is basically themed around how to write codes. Usually,
+you would want to follow a roadmap. No global variables as far as possible, even if you have some, don;t
+let it exceed a couple. If you have them, then use a very understandable name. In functions, try to use refactoring
+as often as you can. Nesting is also something that you can do but use lambda ( which we will learn later) to nest 
+functions within functions. Finally nested blocks are unaviodable but keep in check and also 
+indentation is very important as well.
+
+struck X{
+    void f(int x){
+        struct Y {
+            int f(){return 1;}int m;};
+        int m;
+        return f(m2.f());}
+        int m;
+        void g(int m){
+            if (0<m)
+                (m+2);
+            else {
+                g(m+2.3);
+            }
+        }
+        X() {} int m3(){
+}
+
+void main(){
+    X a;
+    a.f(2);}
+};
+
+The the first thing is main function is inside the other 
+struct function. There is m2 but it isn't defined anywhere in the struct
+int m is initialized two times. I also think that struct y shouldn't 
+be there. void function can't have return there is something wrong there
+as well.
+Few other things to note then:
+    - classes can have classes again.
+    - there are two m used, which one is which in unknown.
+    - g gives m+2.3 but it is int type so there is somehting wrong there as well.
+    - int m3{} declared to return int but never used
+    X() initializes nothing, so m is left uninitialized as well.
+    main should always be int mostly, at least try.
+
+Functions are the way we represent actions and computations. It consists of a return type
+followed by the name of the function followed by a list of
+parameters in parentheses.
+Started learning how to write functions, parameters, declaration and hwo to configure function without
+actually destroying or changing the original one.
