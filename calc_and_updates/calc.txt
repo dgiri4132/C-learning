@@ -127,3 +127,21 @@ followed by the name of the function followed by a list of
 parameters in parentheses.
 Started learning how to write functions, parameters, declaration and hwo to configure function without
 actually destroying or changing the original one.
+
+Pass by Value
+
+int f(int x)
+{
+    x = x + 1;
+    return x;
+}
+
+int xx = 0;
+cout << f(xx) << '\n';
+cout << xx << '\n';
+
+Here the function copies an int which in this case is xx
+its cost hence is the cost of copying the value.
+
+Pass-by-const-reference
+When values are large, copying can be costly, 
