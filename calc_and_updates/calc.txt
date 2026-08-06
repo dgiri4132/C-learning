@@ -144,4 +144,96 @@ Here the function copies an int which in this case is xx
 its cost hence is the cost of copying the value.
 
 Pass-by-const-reference
-When values are large, copying can be costly, 
+When values are large, copying can be costly.
+
+let's look at the example below
+
+void print(vector<double> v)
+{
+    cout << "{";
+    for (int i = 0; i<v.size();++i){
+        cout <, v[i];
+        if(i!=v.size()-1)
+            cout << ",";
+    }
+    cout << "}\n";
+}
+Here, if we use 
+vector <double> vd1(10);
+it will have to copy 10 times as it is in a loop right.
+
+But if we use 
+vector <double> vd2(1000000);
+ we would have to copy numerous times. 
+ So, here the question arises: Why do we have to copying anything? Why can't we just print?
+ what we do is we need a way of giving our print() function "the address" of
+ the vector to print() rather than the copy of the vector. Such an address is called a reference
+ It is used in the way below:
+ void print(const vector<double>& v)
+ {
+    cout <, "{";
+    for (int i = 0; i<v.size(); ++i){
+        cout << v[i];
+        if (i!= v.size()-1)
+            cout << ",";
+    }
+    cout << "}\n";
+ }
+ So you use normal pass-by-value when you need your own independent copy to play with or the type is tiny
+ pass by const& when you want to look at something without copying it. 
+
+ As previously stated, a const has the useful property that we can't accidentally modify the 
+ object passed.
+ Even in the previous function int my_find(const vector<string>& vs, const string& s);
+
+ Now, when we want to reference but also have the ability to modify arguments in the function, we use
+ pass-by-reference like below
+ 
+ void init(vector<double>& v)
+ {
+    for (int i = 0; i < v.size(); ++i)
+    v[i];
+ }
+ 
+ void g(int x)
+ {
+    vector<double> vd1(10);
+    vector<double> vd2(1000000);
+    vector<double> vd3(x);
+
+    init(vd1);
+    init(vd2);
+ }
+
+ Lets revise references from a more technical point of view.
+ A reference is a construct that allows us to declare a new name for an object.
+ eg:-
+ int x = 7;
+ int& r = x;
+
+ References can be usefil as a short hand if we need to refer to some element of a complex function
+ vector<vector<double>> v;
+
+ We would use :-
+ double& var = v[f(x)][g(y)]
+
+ So I understood what write to double& var actually does
+because of reference we can now actually do stuff like this;
+var = var/2+sqrt(var);
+This key property of references helps it operate on any object we pass a reference.
+
+void swap(double& d1, double& d2)
+{
+    double temp = d1;
+    d1 = d2;
+    d2 = temp;
+}
+
+int main(){
+    double x = 1;
+    double y = 2;
+    cout << "x == " <<x << " y== " << y << '\n';
+    swap(x,y);
+    cout << "x == " << x << " y== " << y << '\n'; 
+}
+the swap() function is a standard library function.
