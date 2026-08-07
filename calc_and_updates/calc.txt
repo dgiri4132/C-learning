@@ -237,3 +237,46 @@ int main(){
     cout << "x == " << x << " y== " << y << '\n'; 
 }
 the swap() function is a standard library function.
+
+void g(int a, int& r, const int& cr)
+{
+++a; ++r; int x = cr; // change the local a
+// change the object referred to by r
+// read the object referred to by cr
+}
+{
+int main()
+int x = 0;
+int y = 0;
+int z = 0;
+g(x,y,z); // x==0; y==1; z==0
+g(1,2,3); // error : reference argument r needs a var iable to refer to
+g(1,y,3); // OK: since cr is const we can pass a literal
+}
+In this case, you can see that there are three results
+In the first case, everyything is copy paste so everything works.
+In second case, the second number won't work because & is a reference to some
+already declared stuff so the compiler here isn't referencing to any declared number so it returns error
+We can do in the third case because const doesnot have to change anything right
+in the second case there was ++r hence, there was a necessary change but in this one for r there is y, which is something declarable
+and in the const case it is const, it is nto needed to be changed.
+
+We use non-const-reference arguments
+Theyy are essential for manipulating large containers adn for functions that change several objects
+
+Eg:-
+
+void larger(vector<int>& v1, vector<int>& v2)
+{
+    if(v1.size()!=v2.size())
+        error("larger(): different sizes")
+    
+    for (int i = 0; i<v1.size();++i)
+    if (v1[i]<v2[i])
+        swap(v1[i], v2[i]);
+}
+
+void conv1(double x)
+{
+    int y = narrow
+}
