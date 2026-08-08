@@ -320,3 +320,82 @@ The consexpr function being evaluated at compile time literaaly connat reach out
 doesn't have real, running-program existence at that moment.
 If you really want all time compile time stuff, consteval is your go to. It removes the fallback that constexpr has of going back to the run-time calc. you don't use variables rather literals either as 
 a function input or inside function varibales that are already defined.
+
+Suffix return type:-
+We usually have a traditional function syntax as
+    type - identifier function - identifier( parameter-list)
+eg:-
+double expression(Token_stream& ts);
+
+but you also can use auto
+it's syntax is :-
+auto function-identifier (parameter-list) -> type-identifier
+for example:-
+auto expression(Token_stream& ts)-> double;
+
+Like in auto object definitions, the return type in function definition is 
+also deduced from the body itself. 
+IT SHOULDN'T BE OVERUSED AND SHOULD BE AVOIDED GENERALLY.
+
+Order of evaluation
+So basically this section deals with how codes are run, how the memory is allocated based 
+on order and also location of memory.
+
+string program_name = "silly";
+vector<string> v; void f()
+{
+string s; while (cin>>s && s!="quit") {
+string stripped; string not_letters;
+for (char x : s) if (isalpha(x))
+stripped += x;
+else
+not_letters += x;
+v.push_back(stripped);
+}
+// ... we can still use s here ...
+// v is global
+// s is local to f
+// str ipped is local to the loop
+// x has statement scope
+}
+
+So let's start with global variables
+Global variables:- They start and end with the program, in , as previously stated,
+LIFO order, last in first out.
+Local:- Here everything is local relatively, s is local to f and stripped is local 
+to the while loop. When things are in loop, they usually erase memory when the iteration
+of the loop ends each time. Here in every loop, like stripped in while or x in for loop,
+they have only one space for memory allocated each and they get reused repeatedly.
+
+Expression evaluation
+Most of the time you can't preduct the order sub-expressions get evaluated in, but a handful
+of specific constructs are safe exceptions - and you should structure your code to lean on 
+those exceptions rather than fight the general rule.
+Meaning:- there are some exceptions/rules for order of executions and except that you don't 
+know which one will generally get executed. So try to lean on the side of the ones that you 
+actually know the order of.
+Here are a few examples:-
+f(++i,++i):- you don't know if the first i increment or the second i increment will get executed
+first.
+x = ++i + i :- here also is the same case where you don't know which one will get executed first 
+or second.
+The exceptions are stuff like v[i] here you know v is brought up firstt and then looked up for i
+or x=3 where x is looked at first and then assigned a value of 3 in the end.
+
+Global Initialization
+Global init is chaos across file because you may not have initialized in the correct order. Sometimes
+you geniunely need a global like a date
+you can use something like const Date today = get_date_from_clock()
+but the problem is  that the compiler might read today before get_date_from_clock() and get an 
+garbage Date instead of the real one.
+The fix for this is to hide it behind a function call
+
+const Date& today(){
+    return get_date_from_clock();
+}
+ if you call today() a thousand times, you hit the query, expensive one , a thousand times.
+
+ Here's the new concept of cachedwhere you can take static local variable inside a function which is 
+ initialized only once and then persists in memory across every future call to the function, remembering its
+ value instead of being recreated each time. You use & because you want to use reference if you are
+ calling the same thing again and again.
