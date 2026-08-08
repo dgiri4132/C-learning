@@ -280,3 +280,43 @@ void conv1(double x)
 {
     int y = narrow
 }
+
+Explicit arguments are the ordinary ones:- the ones what you write inside the parentheses.
+Implicit functions is the object a member function is called on, eg:- on v.push_back(4), v would be an implicit argument
+
+A function that calls itself is called recursive function.
+Each time we call a function, the stack of activation records grows by one record. In the opposite direction,
+the record is no longer used when the function returns. 
+
+So, here in, the stack, also called the call stack is a data structure that grows and shrinks at one end according to the rule " Last in, first out."
+
+We use functions to make our calculation comprehensible, so naturally we sometimes want to use a fuction constexpr.
+
+let's create a function right;
+
+constexpr Point scale(Point p) { return{xscale*p.x,yscale*p.y}};
+
+void user(int x, int y)
+{
+Point p1 {x,y}; // at compile time, we don’t know the value of p1
+constexpr Point p2 {10,10};
+Point p3 = scale(p1); // OK: p3 == {100,8}; run-time evaluation is fine
+constexpr Point p4 = scale(p2); // OK: p4 == {100,8}; scale(p2) is a constant
+constexpr Point p5 = scale(p1); //...
+// error : scale (p1) is not a constant expression
+}
+
+Let me learn the concepts of compile time and run tiem and then I will go back to wherever we were;
+Compile is when the machine translates the code, before running.
+Run-time is when you actually click the run button. 
+
+Okay, so here in our case, if we have literal already, the compiler compiles and calculates the answer(even if it has an error),
+at compile time in the case of p2 because it has literal, i.e. numbers. But, in the case of scale(p1), it doesn't calculate at compiler time, but rather
+at Run time. If you look at the case of constexpr point p5 = scale(p1), it demands a const expression, which x,y dont directly give at the compile time 
+itself, hence it will be an error.
+
+To evaluate a function at compile time, like the one at constexpr, it should as simple as possible as the compiler must do it by itself.
+The consexpr function being evaluated at compile time literaaly connat reach out and modify some global variable or static object because that object 
+doesn't have real, running-program existence at that moment.
+If you really want all time compile time stuff, consteval is your go to. It removes the fallback that constexpr has of going back to the run-time calc. you don't use variables rather literals either as 
+a function input or inside function varibales that are already defined.

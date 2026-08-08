@@ -16,5 +16,5 @@ void conv1(double x)
 
 void conv2(int x, int y)
 {
-    double z = double(x)/y;
+    double z = double(x);
 }

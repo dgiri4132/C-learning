@@ -194,11 +194,11 @@ Update in primary needed:
 for negative numbers, we need to add the acceptance of '-' and '+' because some asshole will try to use
 plus as well just to test.
 */
-double primary(){
+double primary(Token_stream& ts){
     Token t=ts.get();
     switch(t.kind){
         case '(':{
-            double d = expression();
+            double d = expression(ts);
             t=ts.get();
             if(t.kind!=')')
                 error(" ')' expected");
@@ -207,9 +207,9 @@ double primary(){
         case '8':
             return t.value;
         case '+':
-            return primary();
+            return primary(ts);
         case '-':
-            return -primary();
+            return -primary(ts);
         case 'S':{
             Token nex = ts.get();
             if (nex.kind !='(')
@@ -291,12 +291,12 @@ Mismatched parentheses, missing commas in pow(...), division/modulo by zero, sqr
         
     }
 }
-double mid_term(){
-    double left = primary();
+double mid_term(Token_stream& ts){
+    double left = primary(ts);
     Token t = ts.get();
     switch(t.kind){
         case '^':{
-            double d = primary();
+            double d = primary(ts);
             return pow(left,d);
         }
         default :{
@@ -305,17 +305,17 @@ double mid_term(){
     }
 }
 }
-double term(){// We're doing the same thing to term as we did to expression
-    double left= mid_term();
+double term(Token_stream& ts){// We're doing the same thing to term as we did to expression
+    double left= mid_term(ts);
     Token t = ts.get();
     while (true){
         switch(t.kind){
             case '*':
-            left*=mid_term();
+            left*=mid_term(ts);
                 t=ts.get();
                 break;
             case '/':{
-                double d = mid_term();
+                double d = mid_term(ts);
                 if(d==0)
                     error("The number is zero.");
                 left/=d;
@@ -324,7 +324,7 @@ double term(){// We're doing the same thing to term as we did to expression
             }
             case '%':
                 {
-                    double d = mid_term();
+                    double d = mid_term(ts);
                     if (d==0)
                         error("cant modulo by zero");
                     left = fmod(left,d);
@@ -338,17 +338,17 @@ double term(){// We're doing the same thing to term as we did to expression
     }
 }
 
-double expression(){// We're gonna edit this to have a putback function for caller to use
-    double left= term();// when it isn't used by the expression()
+double expression(Token_stream& ts){// We're gonna edit this to have a putback function for caller to use
+    double left= term(ts);// when it isn't used by the expression()
     Token t = ts.get();
     while (true){
         switch(t.kind){
             case '+':
-                left +=term();
+                left +=term(ts);
                 t=ts.get();
                 break;
             case '-':
-                left-=term();
+                left-=term(ts);
                 t=ts.get();
                 break;
             default:
