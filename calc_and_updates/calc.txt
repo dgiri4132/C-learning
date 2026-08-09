@@ -395,7 +395,50 @@ const Date& today(){
 }
  if you call today() a thousand times, you hit the query, expensive one , a thousand times.
 
- Here's the new concept of cachedwhere you can take static local variable inside a function which is 
+ Here's the new concept of cache where you can take static local variable inside a function which is 
  initialized only once and then persists in memory across every future call to the function, remembering its
  value instead of being recreated each time. You use & because you want to use reference if you are
  calling the same thing again and again.
+
+ 7.6 Namespaces
+ Namespaces, like the one that we used in "using namespace std" , helps us organize classes, functions,data,
+ and types into an identifiable and named part of a program without defining a type.
+ The structure is usually this:
+ namespace some_lib{
+    struck something1 {/* . . */};
+ }
+ you yourself defining something in your program as "text" is only gonna interfere or cause a problem if the 
+ library and the class are the same
+
+ We have been using "using" for a huge amount of time. It is a declaration, it's like using plain "Greg" when
+ there are no other Gregs in the room.
+ Try to use namespace only for standard library
+
+ 7.7 Modules and Headers
+ The keys to managing declarations of facilities defined elsewhere in C++ are the module and the header.
+ The header is an old and established mechanism for composing programs out of files
+ The module is a modern language mechanism for directly expressing modularity.
+ Module is apparently the superior mechanism for ensuring modularity and thereby speeding up compilation,
+ don't know how currently, but will know in a few moments. Headers have been used for more than 50 years 
+ and there are billions of lines of code using them, so we must know how to use them well.
+
+ Modules
+ Modules are cpp's modern replacement for the old #include header mechanism. So every time a header is passed,
+ it literally pastes the entire text of that file into yours, every single file that includes that headers 
+ have no concept of this is mine, this is yours type of thing. Anything in the header becomes visible to whoever
+ includes it, including implementation details you never meant to expose, and things you never asked for.
+ 
+ Modules fixes this by drawing a hard line between "public interface" and "private implementation"
+So when you have a module right. What you do is that you import stuff like std which are used. Remember that this
+is TokenStreams' own business. Whatever export thing/class is written only those are the things that the person
+importing the module will get to use kind of like public and private in the class member function.
+
+Even though Tokenstream itself does import std and all that stuff to build its own implementation, someone who imports
+Tokenstream does not get all of std dumped into their scope, they only get what was marked.
+
+So header does a literal copy paste, that is what you need to remember, right.
+To ease consistency checking, we include a header both in source files that use its declarations
+and in source files that provide definitions for those declaration.
+When you use header be aware of memory allocation. You shouldn't include something that will pop-up every place you
+call, there will be a linker error. Even though class looks like a definition, if it only describes the shape, does not
+allocate any object, it is fine else if has many calls competing for the same thing, then it is a problem.
