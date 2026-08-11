@@ -1,6 +1,3 @@
-#include <iostream>
-#include <string>
-#include <cmath>
 
 // Trying to correct errors today
 #include <iostream>

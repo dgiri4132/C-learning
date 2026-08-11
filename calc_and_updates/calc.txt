@@ -442,3 +442,6 @@ and in source files that provide definitions for those declaration.
 When you use header be aware of memory allocation. You shouldn't include something that will pop-up every place you
 call, there will be a linker error. Even though class looks like a definition, if it only describes the shape, does not
 allocate any object, it is fine else if has many calls competing for the same thing, then it is a problem.
+
+The difference between namespace and class is that a namespace is just a named region for grouping declarations so their
+name don't collide
