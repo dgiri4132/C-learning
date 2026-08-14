@@ -1,11 +1,7 @@
-module;
+#include "foo.h"
 #include "std_lib_facilities.h"
-export module foo;
+using namespace std;
 
-
-export void print_foo(){
-    int foo = 0;
-    std ::cout << "foo is "<< 0;
-};
-export void set_foo(int x){};
-export int get_foo(){return x;}
+int main(){
+    print_foo();
+}

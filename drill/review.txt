@@ -1,0 +1,60 @@
+Let's start the review exercises and if we can also do the keywords thing
+1- The difference is definitionis where you tell the compiler what the function actually does but 
+    declaration is calling the function to use it. definition is a type of delcaration.
+
+2- definitions have curly brackets.
+
+3- extern: extern int a is declaration-only
+
+4- Because some of the functions are used before actually defining them like expression() in primary(),
+    compiler needs to know what the function actually does right, so declaring it will take it to the definition,
+    hence letting the compiler actually what the function does.
+
+5- definition.
+
+6- Uninitialized variables hold whatever garbage happened. Any value, unpredictable.
+
+7- type, name and parameters.
+
+8- it is eg auto function(parameter)-> return type. Return type needs to be expressed in terms of the parameters.
+
+9- It helps separate which part is which in a function.
+
+10- It helps to know where the name is actually visible.
+
+11- There are global scope, module scop, namespace scope class scope and a local scope
+
+12- Scope is the area of the code where a name can be referred to. So in class scope the memories of the variables are in class only and same with the 
+local scope, only in the if statement.
+
+13- Because you don't know where it was initialized, you don't know which of the dozen functions might have changed it.
+
+14- Pass-by-value is where all values that are being changed or edited have a memory each while pass by reference is you just refer to the variable or 
+    memory that you wan't to change and change it instead of copying for each one.
+
+15- The difference is you can't edit when using pass by const reference because it is const.
+
+16- swap()function is a function which swaps the two ints that you give it.
+
+17- Usually no because vector itself has huge memory.
+
+18- eg:-f(++i,++i). Here you and the compiler won't know which to compile first. This means they won't compile the way you would want.
+
+19- x and y, x or y
+
+20- Functions within classes, classes within classes and classes within functions.
+
+21-  describes the call stack overall.
+
+22- Call stack has the order of things being called recursively, usually, in a run. We need it to visualize when what will returned and stuff like that
+
+23- namespace helps us organize classes functions and data into an indetifiable and named part of a program.
+
+24- class has a type  and can create multiple objects with access control while namespace helps us organize classes.
+
+25- A using declaration pulls one specific name from a namespace into the current scope so it can be used unqualified. 
+
+26- A header will typically be included in many source files. Which means it forces every file that includes that header to also pull in all of X' names.
+
+27- It is the namespace where the entire standard library lives in.
+
