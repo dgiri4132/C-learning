@@ -60,34 +60,34 @@ local scope, only in the if statement.
 
 
 Terms
-Activation record:- A record of call stacks
+Activation record:- A record of one function call
 function:- a block of code that takes parameter inputs and usually returns something or at least does something with it.
 pass-by-reference:- passing/editing things based on reference of the value rather than values themselves.
 argument:- The actual value of the parameter that is inputed.
 function definition:- block of code that defines or sets up what a function does.
 pass-by-value:- passing/editings things by allocating memory for each new value.
 argument passing:- inputting a value for the parameter of a function
-global scope:- the space of code where all sub scope's memory allocation are defined.
-recursion:- repeated loop use of the same function
-call stack:- order of calling of a function in a certain scope
-header file:- a file containing not-readily functions and classes that you can use in your code
+global scope:- outermost scope, anything defined is visible from that point to the end of the file.
+recursion:- function calling itself
+call stack:- actual data structure that tracks active function calls at runtime.
+header file:-a file of declarations
 return:- a key word that sends back a function usually with an attatched value
 class scope:- it means the things used in class is of no value outside class
 constexpr:- constant expression
 namespace:- a way to properly combine functions, classes and named part of a program without defining a type.
 statement scope:- it means it makes memory sense only in the statement.
 declaration:- A notation that the object exists.
-namespace scope:- the variables and memory allocated objects outside the namespace would make no sense/ deleted.
+namespace scope:- names declared in the namespace are visible inside it 
 technicalities:- syntaxes
-definition:- a full list of things for compiler to read to make understand what that objct really does here
-nested block:- Where one object contains another object.
-undeclared identifier:- 
+definition:- a full list of things for compiler to read to make understand what that object really does here
+nested block:- when one block sits inside another 
+undeclared identifier:- a thing that the compiler has no record of.
 extern:- Defined somewhere else
 parameter:- possible input memory places that are used by function
-using declaration:-
-forward declaration:-
+forward declaration:-using declaration before definition
+using declaration:- pulls one specific name from a namespace into scope so it can be used unqualified
 pass-by-const-reference:-using reference of values within an object or the object itself
-using directive:-
+using directive:- pulls in all names from a namespace at once.
 auto:- finds the type itself
 ->:- this return type direction
 suffix return type:- a type of declaration where in the end the return type is written

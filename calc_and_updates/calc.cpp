@@ -35,11 +35,12 @@ class Token{
 };
 class Token_stream{
     public:
-    Token_stream(): full{false}, buffer{0} {}
+    Token_stream(istream& s): full{false}, buffer{0}, ip(s) {}
     Token get();
     void putback(Token t);
     void ignore(char c);
     private:
+        istream& ip;
         bool full=false;
         Token buffer=0;
 };
@@ -66,15 +67,15 @@ Token Token_stream :: get(){
         return buffer;
     }
     char ch = 0;
-    while(cin.get(ch)){
-        if (ch == '\n')
+    while(ip.get(ch)){
+        if ((ch) == '\n')
             return Token{print};
         else if(isspace(ch))
             continue;
         else
         break;
     }
-    if(!cin){
+    if(!ip){
         error("no input");
     }
     switch (ch){
@@ -95,9 +96,9 @@ Token Token_stream :: get(){
         case '0': case '1': case '2': case '3': case '4':
 case '5': case '6': case '7': case '8': case '9':
 {
-    cin.putback(ch);
+    ip.putback(ch);
     double val = 0;
-    cin >> val;
+    ip >> val;
     narrow_cast<int>(val);
     return Token{'8', val};
 }
@@ -105,9 +106,9 @@ default:
     if (isalpha(ch) || ch == '_'){
         string s;
         s+=ch;
-        while(cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch ==  '_'))
+        while(ip.get(ch) && (isalpha(ch) || isdigit(ch) || ch ==  '_'))
             s+=ch;
-        cin.putback(ch);
+        ip.putback(ch);
         if (s == "sqrt")
             return Token{sqr};
         if(s == "pow")
