@@ -15,7 +15,17 @@ vector<int> fibonacci(int x, int y, vector<int>v, int n){
     }
     return v;
 }
-
+int fibonaccii(){
+    int a = 1;
+    int b = 2;
+    int next = a+b;
+    while (next>b){
+        a = b;
+        b = next;
+        next = a+b;
+    }
+    return b;
+}
 
 void print(vector<int> abcd){
     cout<< "printed: ";
